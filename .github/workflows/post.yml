@@ -1,0 +1,14 @@
+name: LinkedIn Bot
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+    - cron: "0 13 * * *"
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Script
+        run: python bot.py
