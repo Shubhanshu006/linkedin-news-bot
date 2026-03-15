@@ -1,7 +1,10 @@
 import feedparser
-import datetime
+import google.generativeai as genai
 
-# News RSS feed
+# Gemini API key
+genai.configure(api_key="YOUR_API_KEY")
+
+# Read finance news
 feed = feedparser.parse("https://www.cnbc.com/id/10000664/device/rss/rss.html")
 
 article = feed.entries[0]
@@ -9,21 +12,24 @@ article = feed.entries[0]
 title = article.title
 summary = article.summary
 
-post = f"""
-{title}
+prompt = f"""
+Write a LinkedIn finance post.
 
-1️⃣ Market Situation
-{summary}
+Headline: {title}
 
-2️⃣ What The Data Shows
-Markets reacting to latest financial developments.
-
-3️⃣ Investor View
-Volatility creates opportunities for long-term investors.
+1️⃣ Situation
+2️⃣ Data insight
+3️⃣ Investor view
 
 Nifty: 23867
 
 Rishabh Kale
 """
+
+model = genai.GenerativeModel("gemini-pro")
+
+response = model.generate_content(prompt)
+
+post = response.text
 
 print(post)
